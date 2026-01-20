@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Search } from "lucide-react";
+import { Menu, X, Search, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { NAV_LINKS, COMPANY_INFO } from "@/lib/constants";
+import { useAuth } from "@/hooks/useAuth";
 
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -11,6 +12,7 @@ const Header = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
+  const { user, signOut } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,6 +32,11 @@ const Header = () => {
       navigate(`/search?query=${encodeURIComponent(searchQuery.trim())}`);
       setSearchQuery("");
     }
+  };
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate("/");
   };
 
   return (
@@ -69,12 +76,12 @@ const Header = () => {
             ))}
           </div>
 
-          {/* Desktop Search & CTA */}
+          {/* Desktop Search & Auth */}
           <div className="hidden lg:flex items-center gap-4">
             <form onSubmit={handleSearch} className="relative">
               <input
                 type="text"
-                placeholder="Search..."
+                placeholder="AI Search..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-40 px-4 py-2 pr-10 text-sm bg-secondary/50 border border-border rounded-full focus:outline-none focus:ring-2 focus:ring-bronze/50 focus:w-56 transition-all duration-300"
@@ -86,6 +93,29 @@ const Header = () => {
                 <Search size={16} />
               </button>
             </form>
+            
+            {user ? (
+              <div className="flex items-center gap-3">
+                <span className="text-sm font-sans text-muted-foreground hidden xl:block">
+                  {user.email?.split("@")[0]}
+                </span>
+                <button
+                  onClick={handleSignOut}
+                  className="p-2 hover:bg-secondary rounded-full transition-colors"
+                  title="Sign Out"
+                >
+                  <LogOut size={18} className="text-muted-foreground hover:text-foreground" />
+                </button>
+              </div>
+            ) : (
+              <Button variant="ghost" size="sm" asChild>
+                <Link to="/auth" className="flex items-center gap-2">
+                  <User size={16} />
+                  Sign In
+                </Link>
+              </Button>
+            )}
+            
             <Button variant="luxury" size="sm" asChild>
               <Link to="/contact">Get Quote</Link>
             </Button>
@@ -131,10 +161,41 @@ const Header = () => {
                   </Link>
                 </motion.div>
               ))}
-              <motion.form
+              
+              {/* Mobile Auth */}
+              <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.5 }}
+                className="pt-4 border-t border-border"
+              >
+                {user ? (
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-sans text-muted-foreground">
+                      Signed in as {user.email?.split("@")[0]}
+                    </span>
+                    <button
+                      onClick={handleSignOut}
+                      className="text-sm font-sans text-bronze hover:underline"
+                    >
+                      Sign Out
+                    </button>
+                  </div>
+                ) : (
+                  <Link
+                    to="/auth"
+                    className="flex items-center gap-2 font-sans text-lg text-foreground/80 hover:text-bronze transition-colors"
+                  >
+                    <User size={18} />
+                    Sign In / Sign Up
+                  </Link>
+                )}
+              </motion.div>
+              
+              <motion.form
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.6 }}
                 onSubmit={handleSearch}
                 className="relative mt-4"
               >
