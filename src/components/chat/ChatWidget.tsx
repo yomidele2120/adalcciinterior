@@ -1,8 +1,10 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageCircle, X, Send, Sparkles } from "lucide-react";
+import { MessageCircle, X, Send, Sparkles, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { COMPANY_INFO, SERVICES } from "@/lib/constants";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
+import { COMPANY_INFO } from "@/lib/constants";
 
 interface Message {
   id: string;
@@ -16,12 +18,13 @@ const ChatWidget = () => {
     {
       id: "welcome",
       role: "assistant",
-      content: `Welcome to ${COMPANY_INFO.name}! I'm your AI assistant. How can I help you with your interior design needs today?`,
+      content: `Welcome to ${COMPANY_INFO.name}! I'm your AI assistant. Ask me anything about interior design, our services, or get inspiration for your space!`,
     },
   ]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const { user } = useAuth();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -31,35 +34,9 @@ const ChatWidget = () => {
     scrollToBottom();
   }, [messages]);
 
-  const generateResponse = (userMessage: string): string => {
-    const lowerMessage = userMessage.toLowerCase();
-    
-    if (lowerMessage.includes("service") || lowerMessage.includes("offer")) {
-      return `We offer a comprehensive range of interior design services:\n\n${SERVICES.map(s => `• ${s.title}`).join('\n')}\n\nWould you like to know more about any specific service?`;
-    }
-    
-    if (lowerMessage.includes("contact") || lowerMessage.includes("phone") || lowerMessage.includes("email")) {
-      return `You can reach us at:\n\n📞 +234 816 899 8902\n📞 +234 706 193 8080\n✉️ adalcciglobal@gmail.com\n\nOr visit our studio at 25th, Paul Street, Abule-Egba, Lagos State.`;
-    }
-    
-    if (lowerMessage.includes("price") || lowerMessage.includes("cost") || lowerMessage.includes("quote")) {
-      return "Our pricing varies based on project scope and requirements. We offer complimentary consultations to understand your needs and provide detailed quotes. Would you like to schedule a consultation?";
-    }
-    
-    if (lowerMessage.includes("portfolio") || lowerMessage.includes("project") || lowerMessage.includes("work")) {
-      return "We've completed stunning projects across Lagos including luxury residences in Victoria Island and Ikoyi, executive offices, and boutique hotels. Visit our Gallery page to explore our portfolio!";
-    }
-    
-    if (lowerMessage.includes("about") || lowerMessage.includes("company") || lowerMessage.includes("who")) {
-      return `${COMPANY_INFO.name} was founded in ${COMPANY_INFO.established} by ${COMPANY_INFO.founder}. We specialize in creating exceptional interior spaces that inspire and transform the way you live. Our team brings together expertise in design, architecture, and project management.`;
-    }
-    
-    return `Thank you for your interest! I'd be happy to help you with information about our interior design services, portfolio, or scheduling a consultation. What would you like to know more about?`;
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim()) return;
+    if (!input.trim() || isTyping) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -71,17 +48,34 @@ const ChatWidget = () => {
     setInput("");
     setIsTyping(true);
 
-    // Simulate AI response delay
-    setTimeout(() => {
-      const response = generateResponse(userMessage.content);
+    try {
+      const { data, error } = await supabase.functions.invoke("ai-search", {
+        body: { 
+          query: userMessage.content,
+          userId: user?.id || null
+        },
+      });
+
+      if (error || data?.error) {
+        throw new Error(data?.error || "Failed to get response");
+      }
+
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: "assistant",
-        content: response,
+        content: data.response,
       };
       setMessages((prev) => [...prev, assistantMessage]);
+    } catch (err) {
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        role: "assistant",
+        content: "I'm sorry, I couldn't process your request. Please try again or contact us directly at adalcciglobal@gmail.com",
+      };
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
       setIsTyping(false);
-    }, 1000 + Math.random() * 1000);
+    }
   };
 
   return (
@@ -176,7 +170,7 @@ const ChatWidget = () => {
                   type="text"
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
-                  placeholder="Type your message..."
+                  placeholder="Ask anything..."
                   className="flex-1 px-4 py-2 bg-secondary border border-border rounded-full focus:outline-none focus:ring-2 focus:ring-bronze/50 font-sans text-sm"
                 />
                 <Button
