@@ -7,28 +7,28 @@ import { COMPANY_INFO, TESTIMONIALS } from "@/lib/constants";
 
 const teamMembers = [
   {
-    name: "Sarah Mitchell",
+    name: "Adaeze Okonkwo",
     role: "Lead Designer & Founder",
-    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=400&auto=format&fit=crop",
-    bio: "With over 15 years of experience, Sarah leads our design vision with passion and precision.",
+    image: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?q=80&w=400&auto=format&fit=crop",
+    bio: "With over 15 years of experience, Adaeze leads our design vision with passion and precision, blending Nigerian heritage with modern aesthetics.",
   },
   {
-    name: "David Okonkwo",
+    name: "Chukwuemeka Eze",
     role: "Senior Architect",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400&auto=format&fit=crop",
-    bio: "David brings architectural excellence and innovative spatial solutions to every project.",
+    image: "https://images.unsplash.com/photo-1506277886164-e25aa3f4ef7f?q=80&w=400&auto=format&fit=crop",
+    bio: "Chukwuemeka brings architectural excellence and innovative spatial solutions inspired by Lagos's vibrant urban landscape.",
   },
   {
-    name: "Amara Johnson",
+    name: "Sarah Mitchell",
     role: "Project Manager",
-    image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=400&auto=format&fit=crop",
-    bio: "Amara ensures every project runs smoothly from concept to completion.",
+    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=400&auto=format&fit=crop",
+    bio: "Sarah ensures every project runs smoothly from concept to completion with international best practices.",
   },
   {
-    name: "Michael Ade",
+    name: "Oluwaseun Adeyemi",
     role: "Interior Stylist",
-    image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=400&auto=format&fit=crop",
-    bio: "Michael's eye for detail transforms spaces into curated masterpieces.",
+    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400&auto=format&fit=crop",
+    bio: "Oluwaseun's eye for detail transforms spaces into curated masterpieces featuring Nigerian artistry.",
   },
 ];
 

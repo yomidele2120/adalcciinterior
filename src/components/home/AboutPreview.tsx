@@ -19,7 +19,7 @@ const AboutPreview = () => {
           >
             <div className="relative">
               <img
-                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800&auto=format&fit=crop"
+                src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?q=80&w=800&auto=format&fit=crop"
                 alt={`${COMPANY_INFO.founder}, Lead Designer at ${COMPANY_INFO.name}`}
                 className="w-full aspect-[3/4] object-cover rounded-lg"
               />
