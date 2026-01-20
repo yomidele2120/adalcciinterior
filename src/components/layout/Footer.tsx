@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Phone, Mail, MapPin } from "lucide-react";
 import { CONTACT_INFO, COMPANY_INFO, NAV_LINKS, SERVICES } from "@/lib/constants";
+import { SocialLinks } from "@/components/ui/SocialIcons";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -22,19 +23,7 @@ const Footer = () => {
             <p className="text-primary-foreground/70 font-sans text-sm leading-relaxed mb-6">
               {COMPANY_INFO.tagline}. Creating exceptional interior spaces that inspire and transform the way you live since {COMPANY_INFO.established}.
             </p>
-            <div className="flex gap-4">
-              {Object.entries(CONTACT_INFO.social).map(([platform, url]) => (
-                <a
-                  key={platform}
-                  href={url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-full border border-primary-foreground/30 flex items-center justify-center hover:bg-bronze hover:border-bronze transition-all duration-300"
-                >
-                  <span className="text-xs uppercase font-sans">{platform[0]}</span>
-                </a>
-              ))}
-            </div>
+            <SocialLinks links={CONTACT_INFO.social} variant="dark" size="md" />
           </div>
 
           {/* Quick Links */}

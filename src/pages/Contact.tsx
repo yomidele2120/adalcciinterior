@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Phone, Mail, MapPin, Clock, Send, MessageCircle } from "lucide-react";
+import { Phone, Mail, MapPin, Clock, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import Layout from "@/components/layout/Layout";
 import { CONTACT_INFO, COMPANY_INFO } from "@/lib/constants";
+import { SocialLinks, SocialIcon } from "@/components/ui/SocialIcons";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -146,11 +147,17 @@ const Contact = () => {
                 href={`https://wa.me/${CONTACT_INFO.whatsapp}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 px-6 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-colors"
+                className="inline-flex items-center gap-3 px-6 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-colors mb-8"
               >
-                <MessageCircle size={20} />
+                <SocialIcon platform="whatsapp" size={20} />
                 <span className="font-sans font-medium">Chat on WhatsApp</span>
               </a>
+
+              {/* Social Media Links */}
+              <div>
+                <h3 className="font-sans font-medium text-foreground mb-4">Follow Us</h3>
+                <SocialLinks links={CONTACT_INFO.social} variant="light" size="md" />
+              </div>
             </motion.div>
 
             {/* Contact Form */}
