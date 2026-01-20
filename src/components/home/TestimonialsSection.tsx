@@ -3,12 +3,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
 import { TESTIMONIALS } from "@/lib/constants";
 
-const testimonialImages = [
-  "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&w=200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=200&auto=format&fit=crop",
-];
-
 const TestimonialsSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -53,7 +47,7 @@ const TestimonialsSection = () => {
                   </p>
                   <div className="flex items-center gap-4">
                     <img
-                      src={testimonialImages[currentIndex]}
+                      src={TESTIMONIALS[currentIndex].image}
                       alt={TESTIMONIALS[currentIndex].name}
                       className="w-14 h-14 rounded-full object-cover border-2 border-bronze"
                     />

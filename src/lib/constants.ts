@@ -14,7 +14,7 @@ export const CONTACT_INFO = {
 export const COMPANY_INFO = {
   name: "Adalcci Interior",
   tagline: "Transforming Spaces Into Inspired Living",
-  founder: "Sarah Mitchell",
+  founder: "Adaeze Okonkwo",
   founderTitle: "Lead Designer",
   established: "2015",
 };
@@ -118,23 +118,23 @@ export const TESTIMONIALS = [
   {
     id: 1,
     name: "Chioma Okonkwo",
-    role: "Homeowner",
-    content: "Adalcci Interior transformed our house into a home beyond our imagination. Their attention to detail and understanding of our lifestyle was exceptional. Every room tells a story.",
-    image: "/testimonials/client-1.jpg",
+    role: "Homeowner, Victoria Island",
+    content: "Adalcci Interior transformed our house into a home beyond our imagination. Their attention to detail and understanding of our lifestyle was exceptional. Every room tells a story of Nigerian elegance.",
+    image: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?q=80&w=200&auto=format&fit=crop",
   },
   {
     id: 2,
     name: "Emmanuel Adeyemi",
-    role: "Business Executive",
-    content: "The office redesign has significantly impacted our company culture. The space now reflects our brand values and has improved employee satisfaction tremendously.",
-    image: "/testimonials/client-2.jpg",
+    role: "CEO, TechHub Nigeria",
+    content: "The office redesign has significantly impacted our company culture. The space now reflects our brand values with a beautiful blend of modern design and Afrocentric elements.",
+    image: "https://images.unsplash.com/photo-1506277886164-e25aa3f4ef7f?q=80&w=200&auto=format&fit=crop",
   },
   {
     id: 3,
-    name: "Aisha Mohammed",
-    role: "Hotel Owner",
-    content: "Working with Adalcci was a seamless experience. They delivered our hotel renovation on time and within budget, exceeding our expectations at every turn.",
-    image: "/testimonials/client-3.jpg",
+    name: "Rebecca Thompson",
+    role: "Boutique Hotel Owner, Lekki",
+    content: "Working with Adalcci was a seamless experience. They delivered our hotel renovation on time and within budget, creating spaces that celebrate Lagos hospitality.",
+    image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=200&auto=format&fit=crop",
   },
 ];
 
