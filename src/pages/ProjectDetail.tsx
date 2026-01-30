@@ -4,25 +4,29 @@ import { ArrowLeft, MapPin, Calendar, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Layout from "@/components/layout/Layout";
 import { PORTFOLIO_ITEMS } from "@/lib/constants";
+import nigerianLivingRoom from "@/assets/portfolio/nigerian-living-room.jpg";
+import nigerianBedroom from "@/assets/portfolio/nigerian-bedroom.jpg";
+import nigerianKitchen from "@/assets/portfolio/nigerian-kitchen.jpg";
+import nigerianConferenceOffice from "@/assets/portfolio/nigerian-conference-office.jpg";
 
 const projectImages: Record<string, string[]> = {
   "modern-minimalist-living": [
-    "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=1200&auto=format&fit=crop",
+    nigerianLivingRoom,
     "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1200&auto=format&fit=crop",
     "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=80&w=1200&auto=format&fit=crop",
   ],
   "luxury-master-suite": [
-    "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?q=80&w=1200&auto=format&fit=crop",
+    nigerianBedroom,
     "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1200&auto=format&fit=crop",
     "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=1200&auto=format&fit=crop",
   ],
   "contemporary-kitchen": [
-    "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?q=80&w=1200&auto=format&fit=crop",
+    nigerianKitchen,
     "https://images.unsplash.com/photo-1556909114-44e3e9899e2b?q=80&w=1200&auto=format&fit=crop",
     "https://images.unsplash.com/photo-1484154218962-a197022b5858?q=80&w=1200&auto=format&fit=crop",
   ],
-  "executive-office": [
-    "https://images.unsplash.com/photo-1497366811353-6870744d04b2?q=80&w=1200&auto=format&fit=crop",
+  "conference-office": [
+    nigerianConferenceOffice,
     "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=1200&auto=format&fit=crop",
     "https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1200&auto=format&fit=crop",
   ],
