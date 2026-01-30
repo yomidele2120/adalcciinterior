@@ -219,21 +219,22 @@ const TestimonialsSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="mt-20 pt-12 border-t border-primary-foreground/10"
+          className="mt-12 pt-8 border-t border-primary-foreground/10"
         >
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
             <div>
-              <h3 className="font-serif text-2xl md:text-3xl mb-2">
-                Client Reviews
+              <h3 className="font-serif text-xl md:text-2xl mb-2">
+                Share Your Experience
               </h3>
-              <p className="font-sans text-primary-foreground/60">
-                Share your experience with Adalcci Interior
+              <p className="font-sans text-sm text-primary-foreground/60">
+                We'd love to hear about your journey with Adalcci Interior
               </p>
             </div>
             <Button
               onClick={() => setShowForm(!showForm)}
-              variant="luxury"
-              className="self-start"
+              variant="bronze"
+              size="lg"
+              className="self-start shadow-lg"
             >
               {showForm ? "Cancel" : "Write a Review"}
             </Button>

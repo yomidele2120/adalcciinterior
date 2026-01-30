@@ -64,7 +64,7 @@ const HeroSection = () => {
             transition={{ duration: 0.8, delay: 0.6 }}
             className="font-sans text-lg md:text-xl text-primary-foreground/80 max-w-2xl mx-auto mb-10"
           >
-            Award-winning interior design studio crafting bespoke spaces that reflect your unique style and elevate everyday living.
+            Premier interior design studio crafting bespoke spaces that celebrate African heritage while embracing contemporary elegance.
           </motion.p>
 
           {/* AI Search Bar */}
