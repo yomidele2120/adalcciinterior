@@ -2,19 +2,21 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { PORTFOLIO_ITEMS } from "@/lib/constants";
-import nigerianLivingRoom from "@/assets/portfolio/nigerian-living-room.jpg";
 import nigerianBedroom from "@/assets/portfolio/nigerian-bedroom.jpg";
 import nigerianKitchen from "@/assets/portfolio/nigerian-kitchen.jpg";
+import nigerianConferenceOffice from "@/assets/portfolio/nigerian-conference-office.jpg";
 
-const portfolioImages = [
-  nigerianLivingRoom,
-  nigerianBedroom,
-  nigerianKitchen,
-];
+const portfolioImages: Record<string, string> = {
+  "conference-office": nigerianConferenceOffice,
+  "luxury-master-suite": nigerianBedroom,
+  "contemporary-kitchen": nigerianKitchen,
+};
 
 const PortfolioPreview = () => {
-  // Filter out the conference office (formerly executive office) for home page
-  const homePageItems = PORTFOLIO_ITEMS.filter(item => item.id !== "conference-office").slice(0, 3);
+  // Show conference office, bedroom, and kitchen on home page (exclude living room)
+  const homePageItems = PORTFOLIO_ITEMS.filter(item => 
+    ["conference-office", "luxury-master-suite", "contemporary-kitchen"].includes(item.id)
+  );
 
   return (
     <section className="section-padding bg-cream">
@@ -59,7 +61,7 @@ const PortfolioPreview = () => {
                 className="group block relative h-[350px] rounded-lg overflow-hidden"
               >
                 <img
-                  src={portfolioImages[index]}
+                  src={portfolioImages[item.id]}
                   alt={item.title}
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
