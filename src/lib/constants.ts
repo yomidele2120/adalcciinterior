@@ -86,12 +86,12 @@ export const PORTFOLIO_ITEMS = [
     images: ["/portfolio/kitchen-1.jpg", "/portfolio/kitchen-2.jpg", "/portfolio/kitchen-3.jpg"],
   },
   {
-    id: "executive-office",
-    title: "Executive Office",
+    id: "conference-office",
+    title: "Conference Office",
     category: "Office",
     location: "Marina, Lagos",
     year: "2023",
-    description: "A commanding executive office that exudes professionalism and style. Thoughtful design elements create an environment conducive to productivity and success.",
+    description: "A commanding conference office that exudes professionalism and style. Thoughtful design elements create an environment conducive to productivity and collaboration.",
     images: ["/portfolio/office-1.jpg", "/portfolio/office-2.jpg", "/portfolio/office-3.jpg"],
   },
   {

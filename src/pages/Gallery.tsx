@@ -4,15 +4,19 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import Layout from "@/components/layout/Layout";
 import { PORTFOLIO_ITEMS, CATEGORIES } from "@/lib/constants";
+import nigerianLivingRoom from "@/assets/portfolio/nigerian-living-room.jpg";
+import nigerianBedroom from "@/assets/portfolio/nigerian-bedroom.jpg";
+import nigerianKitchen from "@/assets/portfolio/nigerian-kitchen.jpg";
+import nigerianConferenceOffice from "@/assets/portfolio/nigerian-conference-office.jpg";
 
-const portfolioImages = [
-  "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=800&auto=format&fit=crop",
-];
+const portfolioImages: Record<string, string> = {
+  "modern-minimalist-living": nigerianLivingRoom,
+  "luxury-master-suite": nigerianBedroom,
+  "contemporary-kitchen": nigerianKitchen,
+  "conference-office": nigerianConferenceOffice,
+  "boutique-hotel-lobby": "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=800&auto=format&fit=crop",
+  "spa-retreat": "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?q=80&w=800&auto=format&fit=crop",
+};
 
 const Gallery = () => {
   const [activeCategory, setActiveCategory] = useState("All");
@@ -73,7 +77,7 @@ const Gallery = () => {
         <div className="container-luxury">
           <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <AnimatePresence mode="popLayout">
-              {filteredItems.map((item, index) => (
+              {filteredItems.map((item) => (
                 <motion.div
                   key={item.id}
                   layout
@@ -85,10 +89,10 @@ const Gallery = () => {
                 >
                   <div
                     className="relative aspect-[4/3] rounded-lg overflow-hidden cursor-pointer"
-                    onClick={() => setLightboxImage(portfolioImages[index % portfolioImages.length])}
+                    onClick={() => setLightboxImage(portfolioImages[item.id] || "")}
                   >
                     <img
-                      src={portfolioImages[index % portfolioImages.length]}
+                      src={portfolioImages[item.id] || ""}
                       alt={item.title}
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     />

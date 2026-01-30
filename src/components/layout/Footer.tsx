@@ -21,7 +21,7 @@ const Footer = () => {
               </span>
             </Link>
             <p className="text-primary-foreground/70 font-sans text-sm leading-relaxed mb-6">
-              {COMPANY_INFO.tagline}. Creating exceptional interior spaces that inspire and transform the way you live since {COMPANY_INFO.established}.
+              {COMPANY_INFO.tagline}. Creating exceptional interior spaces that inspire and transform the way you live and work since {COMPANY_INFO.established}.
             </p>
             <SocialLinks links={CONTACT_INFO.social} variant="dark" size="md" />
           </div>

@@ -1,10 +1,75 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
+import { ChevronLeft, ChevronRight, Quote, Star, Send } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 import { TESTIMONIALS } from "@/lib/constants";
+
+interface UserReview {
+  id: string;
+  name: string;
+  role: string | null;
+  content: string;
+  rating: number;
+  image_url: string | null;
+  is_approved: boolean;
+  created_at: string;
+}
 
 const TestimonialsSection = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [userReviews, setUserReviews] = useState<UserReview[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showForm, setShowForm] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    role: "",
+    content: "",
+    rating: 5,
+  });
+
+  // Fetch approved user reviews
+  useEffect(() => {
+    const fetchReviews = async () => {
+      const { data, error } = await supabase
+        .from("user_reviews")
+        .select("*")
+        .order("created_at", { ascending: false });
+      
+      if (!error && data) {
+        setUserReviews(data);
+      }
+    };
+
+    fetchReviews();
+
+    // Subscribe to real-time updates
+    const channel = supabase
+      .channel("user_reviews")
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "user_reviews",
+        },
+        (payload) => {
+          // Only add if approved (admin would need to approve)
+          const newReview = payload.new as UserReview;
+          if (newReview.is_approved !== false) {
+            setUserReviews((prev) => [newReview, ...prev]);
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
 
   const nextTestimonial = () => {
     setCurrentIndex((prev) => (prev + 1) % TESTIMONIALS.length);
@@ -12,6 +77,48 @@ const TestimonialsSection = () => {
 
   const prevTestimonial = () => {
     setCurrentIndex((prev) => (prev - 1 + TESTIMONIALS.length) % TESTIMONIALS.length);
+  };
+
+  const handleSubmitReview = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!formData.name.trim() || !formData.content.trim()) {
+      toast.error("Please fill in your name and review");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const { error } = await supabase.from("user_reviews").insert({
+        name: formData.name.trim(),
+        role: formData.role.trim() || null,
+        content: formData.content.trim(),
+        rating: formData.rating,
+        is_approved: true, // Auto-approve for now
+      });
+
+      if (error) throw error;
+
+      toast.success("Thank you for your review!");
+      setFormData({ name: "", role: "", content: "", rating: 5 });
+      setShowForm(false);
+
+      // Refresh reviews
+      const { data } = await supabase
+        .from("user_reviews")
+        .select("*")
+        .order("created_at", { ascending: false });
+      
+      if (data) {
+        setUserReviews(data);
+      }
+    } catch (error) {
+      console.error("Error submitting review:", error);
+      toast.error("Failed to submit review. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -105,6 +212,162 @@ const TestimonialsSection = () => {
             <div className="absolute -bottom-4 -right-4 w-40 h-40 border border-bronze/20 rounded-full" />
           </motion.div>
         </div>
+
+        {/* User Reviews Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="mt-20 pt-12 border-t border-primary-foreground/10"
+        >
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
+            <div>
+              <h3 className="font-serif text-2xl md:text-3xl mb-2">
+                Client Reviews
+              </h3>
+              <p className="font-sans text-primary-foreground/60">
+                Share your experience with Adalcci Interior
+              </p>
+            </div>
+            <Button
+              onClick={() => setShowForm(!showForm)}
+              variant="luxury"
+              className="self-start"
+            >
+              {showForm ? "Cancel" : "Write a Review"}
+            </Button>
+          </div>
+
+          {/* Review Form */}
+          <AnimatePresence>
+            {showForm && (
+              <motion.form
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                onSubmit={handleSubmitReview}
+                className="bg-primary-foreground/5 rounded-lg p-6 mb-10"
+              >
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                  <div>
+                    <label className="font-sans text-sm text-primary-foreground/70 mb-2 block">
+                      Your Name *
+                    </label>
+                    <Input
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      placeholder="Enter your name"
+                      className="bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/40"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="font-sans text-sm text-primary-foreground/70 mb-2 block">
+                      Your Role / Location
+                    </label>
+                    <Input
+                      value={formData.role}
+                      onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                      placeholder="e.g., Homeowner, Lekki"
+                      className="bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/40"
+                    />
+                  </div>
+                </div>
+                <div className="mb-4">
+                  <label className="font-sans text-sm text-primary-foreground/70 mb-2 block">
+                    Rating
+                  </label>
+                  <div className="flex gap-1">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        key={star}
+                        type="button"
+                        onClick={() => setFormData({ ...formData, rating: star })}
+                        className="focus:outline-none"
+                      >
+                        <Star
+                          size={24}
+                          className={`transition-colors ${
+                            star <= formData.rating
+                              ? "text-bronze fill-bronze"
+                              : "text-primary-foreground/30"
+                          }`}
+                        />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="mb-4">
+                  <label className="font-sans text-sm text-primary-foreground/70 mb-2 block">
+                    Your Review *
+                  </label>
+                  <Textarea
+                    value={formData.content}
+                    onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                    placeholder="Share your experience with us..."
+                    className="bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground placeholder:text-primary-foreground/40 min-h-[120px]"
+                    required
+                  />
+                </div>
+                <Button type="submit" variant="luxury" disabled={isSubmitting}>
+                  {isSubmitting ? "Submitting..." : "Submit Review"}
+                  <Send size={16} />
+                </Button>
+              </motion.form>
+            )}
+          </AnimatePresence>
+
+          {/* User Reviews List */}
+          {userReviews.length > 0 && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {userReviews.map((review, index) => (
+                <motion.div
+                  key={review.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="bg-primary-foreground/5 rounded-lg p-6"
+                >
+                  <div className="flex gap-1 mb-4">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <Star
+                        key={star}
+                        size={16}
+                        className={
+                          star <= (review.rating || 5)
+                            ? "text-bronze fill-bronze"
+                            : "text-primary-foreground/30"
+                        }
+                      />
+                    ))}
+                  </div>
+                  <p className="font-sans text-primary-foreground/80 leading-relaxed mb-4 line-clamp-4">
+                    "{review.content}"
+                  </p>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-bronze/20 flex items-center justify-center">
+                      <span className="font-serif text-bronze font-bold">
+                        {review.name.charAt(0).toUpperCase()}
+                      </span>
+                    </div>
+                    <div>
+                      <p className="font-sans font-medium text-primary-foreground text-sm">
+                        {review.name}
+                      </p>
+                      {review.role && (
+                        <p className="font-sans text-xs text-primary-foreground/50">
+                          {review.role}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          )}
+        </motion.div>
       </div>
     </section>
   );
