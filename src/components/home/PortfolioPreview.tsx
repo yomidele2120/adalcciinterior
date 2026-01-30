@@ -2,15 +2,20 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { PORTFOLIO_ITEMS } from "@/lib/constants";
+import nigerianLivingRoom from "@/assets/portfolio/nigerian-living-room.jpg";
+import nigerianBedroom from "@/assets/portfolio/nigerian-bedroom.jpg";
+import nigerianKitchen from "@/assets/portfolio/nigerian-kitchen.jpg";
 
 const portfolioImages = [
-  "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?q=80&w=800&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1497366811353-6870744d04b2?q=80&w=800&auto=format&fit=crop",
+  nigerianLivingRoom,
+  nigerianBedroom,
+  nigerianKitchen,
 ];
 
 const PortfolioPreview = () => {
+  // Filter out the conference office (formerly executive office) for home page
+  const homePageItems = PORTFOLIO_ITEMS.filter(item => item.id !== "conference-office").slice(0, 3);
+
   return (
     <section className="section-padding bg-cream">
       <div className="container-luxury">
@@ -39,70 +44,40 @@ const PortfolioPreview = () => {
           </Link>
         </motion.div>
 
-        {/* Portfolio Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Featured Large Item */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="md:row-span-2"
-          >
-            <Link
-              to={`/gallery/${PORTFOLIO_ITEMS[0].id}`}
-              className="group block relative h-full min-h-[400px] md:min-h-full rounded-lg overflow-hidden"
-            >
-              <img
-                src={portfolioImages[0]}
-                alt={PORTFOLIO_ITEMS[0].title}
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-transparent to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-                <span className="inline-block font-sans text-xs tracking-wider uppercase text-bronze mb-2">
-                  {PORTFOLIO_ITEMS[0].category}
-                </span>
-                <h3 className="font-serif text-2xl md:text-3xl text-primary-foreground mb-2">
-                  {PORTFOLIO_ITEMS[0].title}
-                </h3>
-                <p className="font-sans text-sm text-primary-foreground/70 mb-4 line-clamp-2">
-                  {PORTFOLIO_ITEMS[0].description}
-                </p>
-                <span className="inline-flex items-center gap-2 font-sans text-sm text-bronze group-hover:gap-3 transition-all">
-                  View Project
-                  <ArrowUpRight size={16} />
-                </span>
-              </div>
-            </Link>
-          </motion.div>
-
-          {/* Smaller Items */}
-          {PORTFOLIO_ITEMS.slice(1, 4).map((item, index) => (
+        {/* Portfolio Grid - 3 items */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {homePageItems.map((item, index) => (
             <motion.div
               key={item.id}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: (index + 1) * 0.1 }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
             >
               <Link
                 to={`/gallery/${item.id}`}
-                className="group block relative h-[250px] rounded-lg overflow-hidden"
+                className="group block relative h-[350px] rounded-lg overflow-hidden"
               >
                 <img
-                  src={portfolioImages[index + 1]}
+                  src={portfolioImages[index]}
                   alt={item.title}
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-transparent to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-5">
-                  <span className="inline-block font-sans text-xs tracking-wider uppercase text-bronze mb-1">
+                <div className="absolute bottom-0 left-0 right-0 p-6">
+                  <span className="inline-block font-sans text-xs tracking-wider uppercase text-bronze mb-2">
                     {item.category}
                   </span>
-                  <h3 className="font-serif text-xl text-primary-foreground group-hover:text-bronze transition-colors">
+                  <h3 className="font-serif text-2xl text-primary-foreground mb-2 group-hover:text-bronze transition-colors">
                     {item.title}
                   </h3>
+                  <p className="font-sans text-sm text-primary-foreground/70 mb-3 line-clamp-2">
+                    {item.description}
+                  </p>
+                  <span className="inline-flex items-center gap-2 font-sans text-sm text-bronze group-hover:gap-3 transition-all">
+                    View Project
+                    <ArrowUpRight size={16} />
+                  </span>
                 </div>
               </Link>
             </motion.div>

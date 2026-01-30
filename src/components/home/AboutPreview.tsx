@@ -69,9 +69,9 @@ const AboutPreview = () => {
             {/* Stats */}
             <div className="grid grid-cols-3 gap-6 mb-10">
               {[
-                { value: "9+", label: "Years Experience" },
-                { value: "200+", label: "Projects Completed" },
-                { value: "50+", label: "Happy Clients" },
+                { value: "12+", label: "Years Experience" },
+                { value: "250+", label: "Projects Completed" },
+                { value: "200+", label: "Happy Clients" },
               ].map((stat, index) => (
                 <motion.div
                   key={index}
