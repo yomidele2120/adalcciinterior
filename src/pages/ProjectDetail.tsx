@@ -7,6 +7,7 @@ import { PORTFOLIO_ITEMS } from "@/lib/constants";
 import nigerianLivingRoom from "@/assets/portfolio/nigerian-living-room.jpg";
 import nigerianBedroom from "@/assets/portfolio/nigerian-bedroom.jpg";
 import nigerianKitchen from "@/assets/portfolio/nigerian-kitchen.jpg";
+import nigerianKitchen2 from "@/assets/portfolio/nigerian-kitchen-2.jpg";
 import nigerianConferenceOffice from "@/assets/portfolio/nigerian-conference-office.jpg";
 
 const projectImages: Record<string, string[]> = {
@@ -22,7 +23,7 @@ const projectImages: Record<string, string[]> = {
   ],
   "contemporary-kitchen": [
     nigerianKitchen,
-    "https://images.unsplash.com/photo-1556909114-44e3e9899e2b?q=80&w=1200&auto=format&fit=crop",
+    nigerianKitchen2,
     "https://images.unsplash.com/photo-1484154218962-a197022b5858?q=80&w=1200&auto=format&fit=crop",
   ],
   "conference-office": [
